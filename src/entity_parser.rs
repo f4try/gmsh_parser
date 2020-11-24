@@ -80,6 +80,7 @@ impl EntityPaser{
 pub struct Entity {
     pub id: usize,
     pub entity: EntityType,
+    pub tags:[usize;4]
 }
 #[derive(Debug)]
 pub enum EntityType {
@@ -137,11 +138,23 @@ impl Entity {
                         .next()
                         .ok_or(EntityPaserError)
                         .map(|dim_str| dim_str.parse::<f64>().map_err(|_| EntityPaserError))??;
-            }
+        }
         
         let entity = EntityType::new(entity_type, &xyz)?;
-
-        Ok(Self { id, entity})
+        let num_tags = match entity_type{
+            1=>2,
+            _=>4,
+        };
+        // println!("*********");
+        let mut tags:[usize;4] = [0;4];
+        for (_, i) in (0..num_tags).zip(tags.iter_mut()) {
+                *i = parsed_str_iter
+                        .next()
+                        .ok_or(EntityPaserError)
+                        .map(|dim_str| dim_str.parse::<usize>().map_err(|_| EntityPaserError))??;
+        }
+        println!("*********");
+        Ok(Self { id, entity,tags})
     }
 }
 

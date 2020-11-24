@@ -17,7 +17,7 @@ impl ElementPaser{
         let mut i:usize = 2;
         let mut elements:Vec<Element> = vec![];
         let mut entityDim:usize;
-        let mut entityTag:usize;
+        let mut entityTag:usize=0;
         let mut elementType:usize = 2;
         let mut numElementsInBlock:usize = 0;
         while !Self::is_end(&lines[i]){
@@ -31,7 +31,7 @@ impl ElementPaser{
                 i+=1;
                 continue;
             }
-            let element:Element = Element::element_from_line(&lines[i],elementType)?;
+            let element:Element = Element::element_from_line(&lines[i],elementType,entityTag)?;
             elements.push(element); 
             numElementsInBlock-=1;
             i+=1;
@@ -109,7 +109,7 @@ impl ElementType {
 }
 
 impl Element {
-    pub fn element_from_line(line: &str,element_type:usize) -> Result<Self, ElementPaserError> {
+    pub fn element_from_line(line: &str,element_type:usize,entity_tag:usize) -> Result<Self, ElementPaserError> {
         let parsed_nums = line
             .split_whitespace()
             .map(|num_str| num_str.parse().map_err(|_| ElementPaserError))
@@ -118,7 +118,7 @@ impl Element {
         let id = parsed_nums_iter.next().ok_or(ElementPaserError)?;
         // let element_type = parsed_nums_iter.next().ok_or(ElementPaserError)?;
         // let number_of_tags = parsed_nums_iter.next().ok_or(ElementPaserError)?;
-        let mut tags = [0; 3];
+        let mut tags = [0,entity_tag,0];
         // for (_, tag) in (0..number_of_tags).zip(tags.iter_mut()) {
         //     *tag = parsed_nums_iter.next().ok_or(ElementPaserError)?;
         // }
