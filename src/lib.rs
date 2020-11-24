@@ -23,7 +23,7 @@ pub fn parse(lines:&[&str])->Result<(MeshFormat,Vec<PhysicalName>,Vec<Entity>,Ve
     let (physical_name,rest) = PhysicalNameParser::parse(&rest).unwrap_or((Vec::new(),rest));
     let (entities,rest) = EntityPaser::parse(rest).map_err(|_|GmshParseError::EntityPaserError)?;
     let (nodes,rest) = NodePaser::parse(rest).map_err(|_|GmshParseError::NodeParseError)?;
-    let (elements,_) = ElementPaser::parse(rest).map_err(|_|GmshParseError::ElementPaserError)?;
+    let (elements,_) = ElementPaser::parse(rest, &entities).map_err(|_|GmshParseError::ElementPaserError)?;
     Ok((version,physical_name,entities,nodes,elements))
 }
 
