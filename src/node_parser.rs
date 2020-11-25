@@ -51,10 +51,12 @@ impl NodePaser{
                 numNodesInBlockRemain-=1;
                 if numNodesInBlockRemain==0{
                     is_id = false;
+                    id -= numNodesInBlock;
                     numNodesInBlockRemain = numNodesInBlock;
                 }
                 continue;
             }
+            id +=1;
             let node = Node::node_from_line(id, &lines[i])?;
             nodes.push(node);
             numNodesInBlockRemain-=1;
@@ -96,7 +98,7 @@ pub struct Node {
 impl Node {
     pub fn node_from_line(id:usize,line: &str) -> Result<Self, NodeParseError> {
         let mut iter = line.split_whitespace();
-        let id_str: &str = iter.next().ok_or(NodeParseError)?;
+        // let id_str: &str = iter.next().ok_or(NodeParseError)?;
         // let id: usize = id_str.parse().map_err(|_|NodeParseError)?;
         let mut coord = [0.0f64; 3];
         for (coord_str, coord) in iter.zip(coord.iter_mut()) {

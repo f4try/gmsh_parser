@@ -120,8 +120,30 @@ impl Element {
         // let element_type = parsed_nums_iter.next().ok_or(ElementPaserError)?;
         // let number_of_tags = parsed_nums_iter.next().ok_or(ElementPaserError)?;
         let element = ElementType::new(element_type, &parsed_nums_iter.collect::<Vec<usize>>())?;
-        for 
-        let mut tags = [0,entity_tag,0];
+        let mut physical_tag = 0;
+        for entity in entities.iter(){
+            let is_type:bool = match element_type{
+                1=>{match entity.entity{
+                        EntityType::Curve(_)=>true,
+                        _=>false,
+                   }
+                },
+                2 | 3=>{match entity.entity{
+                        EntityType::Surface(_)=>true,
+                        _=>false,
+                        }
+                },
+                _=>{match entity.entity{
+                        EntityType::Volume(_)=>true,
+                        _=>false,
+                        }
+                }
+            };
+            if is_type && entity_tag==entity.id{
+                physical_tag = entity.physical_tag;
+            }
+        }
+        let tags = [physical_tag,entity_tag,0];
         // for (_, tag) in (0..number_of_tags).zip(tags.iter_mut()) {
         //     *tag = parsed_nums_iter.next().ok_or(ElementPaserError)?;
         // }
