@@ -8,3 +8,9 @@ Physical Curve("ZERO") = {3, 1};
 Physical Curve("HIGH") = {4};
 //+
 Physical Curve("LOW") = {2};
+//+
+Transfinite Curve {3, 1} = 10 Using Progression 1;
+//+
+Transfinite Curve {4, 2} = 5 Using Progression 1;
+//+
+Physical Surface("Domain") = {1};

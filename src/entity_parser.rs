@@ -153,7 +153,7 @@ impl Entity {
                         .ok_or(EntityPaserError)
                         .map(|dim_str| dim_str.parse::<usize>().map_err(|_| EntityPaserError))??;
         }
-        println!("*********");
+        // println!("*********");
         Ok(Self { id, entity, physical_tag})
     }
 }
